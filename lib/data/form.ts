@@ -24,7 +24,7 @@ export const formJSON = {
           className: 'w-full border-2 text-black rounded px-2 py-1 bg-white',
           placeholder: 'Selecciona tu país',
           rules: {
-            required: 'El apellido es requerido',
+            required: 'El país es requerido',
           },
         },
         {
@@ -47,7 +47,9 @@ export const formJSON = {
           rules: {
             required: 'El email es requerido',
             pattern: {
-              value: /\S+@\S+\.\S+/,
+              value: new RegExp(
+                '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$'
+              ),
               message: 'El email no es valido',
             },
           },
