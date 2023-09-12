@@ -18,6 +18,16 @@ export const formJSON = {
           },
         },
         {
+          type: 'select',
+          name: 'country',
+          label: 'País',
+          className: 'w-full border-2 text-black rounded px-2 py-1 bg-white',
+          placeholder: 'Selecciona tu país',
+          rules: {
+            required: 'El apellido es requerido',
+          },
+        },
+        {
           type: 'text',
           name: 'lastName',
           label: 'Apellido',
