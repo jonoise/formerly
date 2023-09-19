@@ -33,7 +33,7 @@ const defaultOptions: PasswordOptions = {
     placeholder: 'Enter your password',
   },
   rules: {
-    required: 'The password is required.',
+    required: 'The password is required',
     minLength: {
       value: 8,
       message: 'Password must be at least 8 characters long',
