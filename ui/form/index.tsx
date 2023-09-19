@@ -4,7 +4,7 @@ import React, { FC, useEffect } from 'react'
 import {
   Controller,
   ControllerProps,
-  Field,
+  ControllerRenderProps,
   FieldPath,
   FieldValues,
   FormProvider,
@@ -14,16 +14,20 @@ import {
 import clsx from 'clsx'
 import { InputProps } from './input'
 import { EmailOptions } from '../presets/email'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { createSchema } from '@/lib/schemas/create'
+import { createSchema } from '@/lib/schemas'
+import { PasswordOptions } from '../presets/password'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+export type Preset = {
+  component: React.ForwardRefExoticComponent<
+    { field: ControllerRenderProps<FieldValues, string> } & InputProps &
+      React.RefAttributes<HTMLInputElement>
+  >
+  options: EmailOptions | PasswordOptions | any
+}
 
 type Props = {
-  presets?: {
-    component: React.ForwardRefExoticComponent<
-      { field: Field } & InputProps & React.RefAttributes<HTMLInputElement>
-    >
-    options: EmailOptions | any
-  }[]
+  presets?: Preset[]
   onSubmit?: (data: any) => Promise<void>
   onSuccess?: (json?: any) => void
   onError?: (json?: any) => void
@@ -165,15 +169,14 @@ FormMessage.displayName = 'FormMessage'
 
 export const FormRenderer: FC<Props> = (props) => {
   const formSchema = createSchema(props.presets)
-
-  const form = useForm()
+  const form = useForm({ resolver: yupResolver(formSchema) })
 
   useEffect(() => {
     if (props.presets) {
       props.presets.forEach((preset) => {
         form.setValue(
-          preset.options.name,
-          preset.options.props.defaultValue || ''
+          preset.options.name!,
+          preset?.options?.props?.defaultValue || ''
         )
       })
     }
@@ -203,14 +206,16 @@ export const FormRenderer: FC<Props> = (props) => {
             <FormField
               key={id}
               control={form.control}
-              name={preset.options.name}
-              rules={preset.options.rules}
-              defaultValue={preset.options.props.defaultValue || ''}
+              name={preset.options.name!}
+              defaultValue={preset?.options?.props?.defaultValue || ''}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{preset.options.label}</FormLabel>
                   <FormControl>
-                    <preset.component {...preset.options.props} field={field} />
+                    <preset.component
+                      {...preset?.options?.props}
+                      field={field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

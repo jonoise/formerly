@@ -5,9 +5,17 @@ import { formJSON } from '@/lib/data/form'
 import { FormRenderer } from '@/ui/form'
 
 export default function Home() {
-  const { email } = usePresets()
+  const { email, password } = usePresets()
 
-  const presets = [email()]
+  const presets = [
+    email(),
+    password(),
+    password({
+      label: 'Confirm Password',
+      name: 'confirmPassword',
+      confirm: true,
+    }),
+  ]
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>

@@ -7,7 +7,7 @@ type PasswordProps = React.InputHTMLAttributes<HTMLInputElement> & {
   field: Field
 }
 
-export type EmailOptions = {
+export type PasswordOptions = {
   props?: React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -15,24 +15,36 @@ export type EmailOptions = {
   name?: string
   label?: string
   rules?: RegisterOptions
+  shouldMatch?: string
+  shouldMatchMessage?: string
+  confirm?: boolean
 }
 
-const defaultOptions: EmailOptions = {
+const defaultOptions: PasswordOptions = {
   label: 'Password',
   name: 'password',
+  confirm: false,
   props: {
-    placeholder: 'Enter your email address',
+    placeholder: 'Enter your password',
   },
   rules: {
-    required: true,
-    pattern: {
-      value: /\S+@\S+\.\S+/,
-      message: 'Please enter a valid email address.',
+    required: 'The password is required.',
+    minLength: {
+      value: 8,
+      message: 'Password must be at least 8 characters long',
     },
   },
 }
 
-export const password = (options: EmailOptions = defaultOptions) => {
+export const password = (options: PasswordOptions = defaultOptions) => {
+  const mergedOptions = { ...defaultOptions, ...options }
+
+  if (mergedOptions.confirm) {
+    mergedOptions.shouldMatch = mergedOptions.shouldMatch || 'password'
+    mergedOptions.shouldMatchMessage =
+      mergedOptions.shouldMatchMessage || 'Passwords do not match'
+  }
+
   return {
     component: React.forwardRef<HTMLInputElement, PasswordProps>(
       (props, ref) => {
@@ -47,6 +59,6 @@ export const password = (options: EmailOptions = defaultOptions) => {
         )
       }
     ),
-    options: { ...defaultOptions, ...options },
+    options: mergedOptions,
   }
 }

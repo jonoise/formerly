@@ -1,9 +1,16 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Field, RegisterOptions } from 'react-hook-form'
+import {
+  ControllerRenderProps,
+  Field,
+  FieldValues,
+  RegisterOptions,
+} from 'react-hook-form'
 import { DEFAULT_INPUT_STYLES } from '@/lib/constants'
 
-type InputProps = React.InputHTMLAttributes<HTMLInputElement> & { field: Field }
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  field: ControllerRenderProps<FieldValues, string>
+}
 
 export type EmailOptions = {
   props?: React.DetailedHTMLProps<
