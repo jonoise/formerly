@@ -63,10 +63,11 @@ export default function Home() {
           <pre className='rounded-xl mt-5 text-xs'>
             <SyntaxHighlighter
               className='rounded p-5 text-xs'
-              children={snippet}
               language='jsx'
               style={dracula}
-            />
+            >
+              {snippet}
+            </SyntaxHighlighter>
           </pre>
         </div>
         <div className='flex-1'>
