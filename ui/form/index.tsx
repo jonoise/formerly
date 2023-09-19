@@ -4,21 +4,31 @@ import React, { FC, useEffect } from 'react'
 import {
   Controller,
   ControllerProps,
+  Field,
   FieldPath,
   FieldValues,
   FormProvider,
   useForm,
   useFormContext,
 } from 'react-hook-form'
-import { FormJSON } from '..'
 import clsx from 'clsx'
-import { Input } from './input'
+import { InputProps } from './input'
+import { EmailOptions } from '../presets/email'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createSchema } from '@/lib/schemas/create'
 
 type Props = {
-  json: FormJSON
+  presets?: {
+    component: React.ForwardRefExoticComponent<
+      { field: Field } & InputProps & React.RefAttributes<HTMLInputElement>
+    >
+    options: EmailOptions | any
+  }[]
   onSubmit?: (data: any) => Promise<void>
   onSuccess?: (json?: any) => void
   onError?: (json?: any) => void
+  submitLabel?: string
+  submitClassName?: string
 }
 
 type FormFieldContextValue<
@@ -32,7 +42,7 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
 )
 
-const FormField = <
+export const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
@@ -76,7 +86,7 @@ const useFormField = () => {
   }
 }
 
-const FormLabel = React.forwardRef<
+export const FormLabel = React.forwardRef<
   HTMLLabelElement,
   React.HTMLAttributes<HTMLLabelElement>
 >(({ className, ...props }, ref) => {
@@ -93,7 +103,7 @@ const FormLabel = React.forwardRef<
 })
 FormLabel.displayName = 'FormLabel'
 
-const FormItem = React.forwardRef<
+export const FormItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
@@ -107,7 +117,7 @@ const FormItem = React.forwardRef<
 })
 FormItem.displayName = 'FormItem'
 
-const FormControl = React.forwardRef<
+export const FormControl = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ ...props }, ref) => {
@@ -129,7 +139,7 @@ const FormControl = React.forwardRef<
 })
 FormControl.displayName = 'FormControl'
 
-const FormMessage = React.forwardRef<
+export const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
@@ -154,67 +164,74 @@ const FormMessage = React.forwardRef<
 FormMessage.displayName = 'FormMessage'
 
 export const FormRenderer: FC<Props> = (props) => {
-  const { json } = props
+  const formSchema = createSchema(props.presets)
 
-  const form = useForm({})
+  const form = useForm()
 
   useEffect(() => {
-    if (props.json) {
-      props.json.steps
-        .flatMap((step) => step.inputs)
-        .map((input) => {
-          if (input.defaultValue) {
-            form.setValue(input.name, input.defaultValue)
-          }
-        })
+    if (props.presets) {
+      props.presets.forEach((preset) => {
+        form.setValue(
+          preset.options.name,
+          preset.options.props.defaultValue || ''
+        )
+      })
     }
-  }, [props.json])
+  }, [props.presets])
 
   return (
     <FormProvider {...form}>
       <form
         style={{ width: '100%' }}
+        className='space-y-5'
         onSubmit={form.handleSubmit(async (data) =>
           props.onSubmit
             ? props
                 .onSubmit(data)
-                .then((json) => props.onSuccess && props.onSuccess(json))
-                .catch((json) => props.onError && props.onError(json))
+                .then((json) =>
+                  props.onSuccess ? props.onSuccess(json) : console.log(json)
+                )
+                .catch((json) =>
+                  props.onError ? props.onError(json) : console.log(json)
+                )
             : console.log(data)
         )}
       >
-        {json.steps.map((step) => {
+        {props.presets?.map((preset) => {
+          const id = React.useId()
           return (
-            <div key={step.id}>
-              {step.inputs.map((input, index) => {
-                return (
-                  <div key={index}>
-                    <FormField
-                      control={form.control}
-                      name={input.name}
-                      rules={input.rules}
-                      render={({ field }) => {
-                        return (
-                          <FormItem>
-                            <FormLabel>{input.label}</FormLabel>
-                            <FormControl>
-                              <Input {...field} {...input} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )
-                      }}
-                    />
-                  </div>
-                )
-              })}
-            </div>
+            <FormField
+              key={id}
+              control={form.control}
+              name={preset.options.name}
+              rules={preset.options.rules}
+              defaultValue={preset.options.props.defaultValue || ''}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{preset.options.label}</FormLabel>
+                  <FormControl>
+                    <preset.component {...preset.options.props} field={field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           )
         })}
-        <button className={clsx(json.submit.className)} type='submit'>
-          {json.submit.label}
-        </button>
+        <div className='flex justify-end'>
+          <button
+            type='submit'
+            className={clsx(
+              'bg-blue-500 text-white px-5 py-2 rounded-lg',
+              props.submitClassName
+            )}
+          >
+            {props.submitLabel || 'Submit'}
+          </button>
+        </div>
       </form>
     </FormProvider>
   )
 }
+
+FormRenderer.displayName = 'FormRenderer'

@@ -1,9 +1,14 @@
 'use client'
 
+import { usePresets } from '@/hooks/use-presets'
 import { formJSON } from '@/lib/data/form'
 import { FormRenderer } from '@/ui/form'
 
 export default function Home() {
+  const { email } = usePresets()
+
+  const presets = [email()]
+
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
       <div className='w-full flex space-x-5'>
@@ -15,7 +20,8 @@ export default function Home() {
         </div>
         <div className='flex-1'>
           <FormRenderer
-            json={formJSON}
+            presets={presets}
+            submitLabel='Submit Form'
             onSubmit={async (data) => {
               alert(JSON.stringify(data, null, 2))
             }}
