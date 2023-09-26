@@ -364,14 +364,6 @@
   dependencies:
     tslib "^2.4.0"
 
-"@types/@lob/react-address-autocomplete":
-  version "2.2.0"
-  resolved "https://codeload.github.com/lob/react-address-autocomplete/tar.gz/d7e0ebf8a5daef505d1ff8753698286851b74ce6"
-  dependencies:
-    base-64 "^1.0.0"
-    lodash.throttle "^4.1.1"
-    react-select "^5.3.0"
-
 "@types/hast@^2.0.0":
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/@types/hast/-/hast-2.3.6.tgz#bb8b05602112a26d22868acb70c4b20984ec7086"
