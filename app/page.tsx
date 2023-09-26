@@ -1,7 +1,7 @@
 'use client'
 
 import { usePresets } from '@/hooks/use-presets'
-import { form, form2 } from '@/lib/data/form'
+import { form, form2, form3 } from '@/lib/data/form'
 import { FormRenderer } from '@/ui/form'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { atelierCaveDark as dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs'
@@ -95,6 +95,43 @@ export default function Home() {
         <div className='flex-1'>
           <FormRenderer
             json={form2}
+            submitLabel='Submit Form'
+            onSubmit={async (data) => {
+              alert(JSON.stringify(data, null, 2))
+            }}
+          />
+        </div>
+      </div>
+      <div className='w-full space-y-5'>
+        <div className='flex-1'>
+          <h1 className='text-2xl font-bold'>With default values</h1>
+          <p>
+            There are default options to each preset, but you can define your
+            own.
+          </p>
+          <p>The following form is coded as:</p>
+          <pre className='rounded-xl mt-5 text-xs'>
+            <SyntaxHighlighter
+              className='rounded p-5 text-xs'
+              language='json'
+              style={dracula}
+            >
+              {'const json = ' +
+                JSON.stringify(form3, null, 2) +
+                '\n' +
+                `<FormRenderer
+  json={json}
+  submitLabel='Submit Form'
+  onSubmit={async (data) => {
+  alert(JSON.stringify(data, null, 2))
+  }}
+/>`}
+            </SyntaxHighlighter>
+          </pre>
+        </div>
+        <div className='flex-1'>
+          <FormRenderer
+            json={form3}
             submitLabel='Submit Form'
             onSubmit={async (data) => {
               alert(JSON.stringify(data, null, 2))

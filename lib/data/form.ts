@@ -37,3 +37,44 @@ export const form2 = {
     },
   ],
 }
+
+export const form3 = {
+  inputs: [
+    {
+      type: 'text',
+      options: {
+        name: 'name',
+        label: 'Name',
+        props: {
+          defaultValue: 'John Doe',
+        },
+      },
+    },
+    {
+      type: 'text',
+      options: {
+        name: 'profession',
+        label: 'Profession',
+        props: {
+          defaultValue: 'Attorney',
+        },
+      },
+    },
+    {
+      type: 'address',
+      options: {
+        props: {
+          defaultValue: {
+            value: {
+              primary_line: '123 Main St',
+              city: 'Anytown',
+              state: 'CA',
+              zip_code: '12345',
+            },
+            label: '123 Main St, Anytown, CA 12345',
+          },
+        },
+      },
+    },
+  ],
+}

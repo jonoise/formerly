@@ -54,6 +54,7 @@ export const address = (options: AddressOptions = defaultOptions) => {
         <Autocomplete
           {...rest}
           {...field}
+          inputValue={field.value.label}
           onSelection={(address: any) => {
             onChange({
               value: address.value,
