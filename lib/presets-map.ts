@@ -1,12 +1,14 @@
 import { Preset } from '@/ui/form'
 import { address } from '@/ui/presets/address'
 import { email } from '@/ui/presets/email'
+import { text } from '@/ui/presets/text'
 import { password } from '@/ui/presets/password'
 
 export const presetsMap = {
   email,
   password,
   address,
+  text,
 }
 
 export const getPresets = (json: any) => {
