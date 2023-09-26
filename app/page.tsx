@@ -28,23 +28,14 @@ export default function Home() {
             A simple text preset with their options and an address preset with
             its default options.
           </p>
-          <p>The following form is coded as:</p>
+          <p>The following form is rendered from:</p>
           <pre className='rounded-xl mt-5 text-xs'>
             <SyntaxHighlighter
               className='rounded p-5 text-xs'
               language='json'
               style={dracula}
             >
-              {'const json = ' +
-                JSON.stringify(form, null, 2) +
-                '\n' +
-                `<FormRenderer
-  json={json}
-  submitLabel='Submit Form'
-  onSubmit={async (data) => {
-  alert(JSON.stringify(data, null, 2))
-  }}
-/>`}
+              {'const json = ' + JSON.stringify(form, null, 2)}
             </SyntaxHighlighter>
           </pre>
         </div>
@@ -72,23 +63,14 @@ export default function Home() {
             to validate againts by passing the name as a string to the confirm
             option.
           </p>
-          <p>The following form is coded as:</p>
+          <p>The following form is rendered from:</p>
           <pre className='rounded-xl mt-5 text-xs'>
             <SyntaxHighlighter
               className='rounded p-5 text-xs'
               language='json'
               style={dracula}
             >
-              {'const json = ' +
-                JSON.stringify(form2, null, 2) +
-                '\n' +
-                `<FormRenderer
-  json={json}
-  submitLabel='Submit Form'
-  onSubmit={async (data) => {
-  alert(JSON.stringify(data, null, 2))
-  }}
-/>`}
+              {'const json = ' + JSON.stringify(form2, null, 2)}
             </SyntaxHighlighter>
           </pre>
         </div>
@@ -109,23 +91,14 @@ export default function Home() {
             There are default options to each preset, but you can define your
             own.
           </p>
-          <p>The following form is coded as:</p>
+          <p>The following form is rendered from:</p>
           <pre className='rounded-xl mt-5 text-xs'>
             <SyntaxHighlighter
               className='rounded p-5 text-xs'
               language='json'
               style={dracula}
             >
-              {'const json = ' +
-                JSON.stringify(form3, null, 2) +
-                '\n' +
-                `<FormRenderer
-  json={json}
-  submitLabel='Submit Form'
-  onSubmit={async (data) => {
-  alert(JSON.stringify(data, null, 2))
-  }}
-/>`}
+              {'const json = ' + JSON.stringify(form3, null, 2)}
             </SyntaxHighlighter>
           </pre>
         </div>
