@@ -31,7 +31,6 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@types/": "lob/react-address-autocomplete",
     "@types/react-syntax-highlighter": "^15.5.7"
   }
 }
