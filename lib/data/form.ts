@@ -1,20 +1,23 @@
 export const form = {
   inputs: [
+    // {
+    //   type: 'email',
+    //   options: {},
+    // },
+    // {
+    //   type: 'password',
+    //   options: {},
+    // },
     {
-      type: 'email',
-      options: {},
+      type: 'address',
     },
-    {
-      type: 'password',
-      options: {},
-    },
-    {
-      type: 'password',
-      options: {
-        name: 'confirmPassword',
-        confirm: true,
-        label: 'Confirm Password',
-      },
-    },
+    // {
+    //   type: 'password',
+    //   options: {
+    //     name: 'confirmPassword',
+    //     confirm: true,
+    //     label: 'Confirm Password',
+    //   },
+    // },
   ],
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 import {
   Controller,
   ControllerProps,
@@ -27,7 +27,7 @@ export type Preset = {
   options: EmailOptions | PasswordOptions | any
 }
 
-type Props = {
+type FormRendererProps = {
   json: any
   onSubmit?: (data: any) => Promise<void>
   onSuccess?: (json?: any) => void
@@ -148,11 +148,15 @@ export const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
-  const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message) : children
+  const { error, formMessageId, name } = useFormField()
+  let body = error ? String(error?.message) : children
 
   if (!body) {
     return null
+  }
+
+  if (name === 'address') {
+    body = 'Please select an address from the dropdown'
   }
 
   return (
@@ -168,21 +172,24 @@ export const FormMessage = React.forwardRef<
 })
 FormMessage.displayName = 'FormMessage'
 
-export const FormRenderer: FC<Props> = (props) => {
-  const presets = getPresets(props.json)
-  const formSchema = createSchema(presets)
+export const FormRenderer: FC<FormRendererProps> = (props) => {
+  const presets = useMemo(() => getPresets(props.json), [])
+  const formSchema = useMemo(() => createSchema(presets), [])
   const form = useForm({ resolver: yupResolver(formSchema) })
 
   useEffect(() => {
     if (presets) {
       presets.forEach((preset) => {
+        if (!preset?.options?.props?.defaultValue) return
         form.setValue(
           preset.options.name!,
-          preset?.options?.props?.defaultValue || ''
+          preset?.options?.props?.defaultValue
         )
       })
     }
   }, [presets])
+
+  console.log(form.formState.errors)
 
   return (
     <FormProvider {...form}>
@@ -199,7 +206,7 @@ export const FormRenderer: FC<Props> = (props) => {
                 .catch((json) =>
                   props.onError ? props.onError(json) : console.log(json)
                 )
-            : console.log(data)
+            : console.log({ data })
         )}
       >
         {presets?.map((preset) => {
@@ -209,7 +216,7 @@ export const FormRenderer: FC<Props> = (props) => {
               key={id}
               control={form.control}
               name={preset.options.name!}
-              defaultValue={preset?.options?.props?.defaultValue || ''}
+              defaultValue={preset?.options?.props?.defaultValue || undefined}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{preset.options.label}</FormLabel>

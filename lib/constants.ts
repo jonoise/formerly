@@ -13,6 +13,4 @@ export const textSchemas = [
 ]
 export const numberSchemas = ['number', 'range']
 
-export const objectSchemas = ['object']
-
 export const booleanSchemas = ['checkbox']

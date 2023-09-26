@@ -17,6 +17,7 @@ export type PasswordOptions = {
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >
+  type?: string
   name?: string
   label?: string
   rules?: RegisterOptions
@@ -28,6 +29,7 @@ export type PasswordOptions = {
 const defaultOptions: PasswordOptions = {
   label: 'Password',
   name: 'password',
+  type: 'password',
   confirm: false,
   props: {
     placeholder: 'Enter your password',

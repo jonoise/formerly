@@ -20,10 +20,12 @@ export type EmailOptions = {
   name?: string
   label?: string
   rules?: RegisterOptions
+  type?: string
 }
 
 const defaultOptions: EmailOptions = {
   label: 'Email',
+  type: 'email',
   name: 'email',
   props: {
     placeholder: 'Enter your email address',
