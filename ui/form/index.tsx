@@ -17,6 +17,7 @@ import { EmailOptions } from '../presets/email'
 import { createSchema } from '@/lib/schemas'
 import { PasswordOptions } from '../presets/password'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { getPresets } from '@/lib/presets-map'
 
 export type Preset = {
   component: React.ForwardRefExoticComponent<
@@ -27,7 +28,7 @@ export type Preset = {
 }
 
 type Props = {
-  presets?: Preset[]
+  json: any
   onSubmit?: (data: any) => Promise<void>
   onSuccess?: (json?: any) => void
   onError?: (json?: any) => void
@@ -168,19 +169,20 @@ export const FormMessage = React.forwardRef<
 FormMessage.displayName = 'FormMessage'
 
 export const FormRenderer: FC<Props> = (props) => {
-  const formSchema = createSchema(props.presets)
+  const presets = getPresets(props.json)
+  const formSchema = createSchema(presets)
   const form = useForm({ resolver: yupResolver(formSchema) })
 
   useEffect(() => {
-    if (props.presets) {
-      props.presets.forEach((preset) => {
+    if (presets) {
+      presets.forEach((preset) => {
         form.setValue(
           preset.options.name!,
           preset?.options?.props?.defaultValue || ''
         )
       })
     }
-  }, [props.presets])
+  }, [presets])
 
   return (
     <FormProvider {...form}>
@@ -200,7 +202,7 @@ export const FormRenderer: FC<Props> = (props) => {
             : console.log(data)
         )}
       >
-        {props.presets?.map((preset) => {
+        {presets?.map((preset) => {
           const id = React.useId()
           return (
             <FormField

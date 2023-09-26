@@ -1,15 +1,10 @@
 'use client'
 
 import { usePresets } from '@/hooks/use-presets'
-import { formJSON } from '@/lib/data/form'
+import { form } from '@/lib/data/form'
 import { FormRenderer } from '@/ui/form'
-import 'highlight.js/styles/a11y-dark.css'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { atelierCaveDark as dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs'
-
-import hljs from 'highlight.js/lib/core'
-import javascript from 'highlight.js/lib/languages/javascript'
-hljs.registerLanguage('javascript', javascript)
 
 const snippet = `export default function Home() {
 const { email, password } = usePresets()
@@ -38,7 +33,6 @@ return (
   </main>
 }
 `
-const code = hljs.highlight(snippet, { language: 'javascript' }).value
 
 export default function Home() {
   const { email, password } = usePresets()
@@ -72,7 +66,7 @@ export default function Home() {
         </div>
         <div className='flex-1'>
           <FormRenderer
-            presets={presets}
+            json={form}
             submitLabel='Submit Form'
             onSubmit={async (data) => {
               alert(JSON.stringify(data, null, 2))
