@@ -67,9 +67,9 @@ export default function Home() {
           </p>
           <p>
             The password preset when declaring `confirm: true` will look for
-            another input with the name as "password". If it finds it, it will
-            validate that the values match. You can define another input to
-            validate againts by passing the name as a string to the confirm
+            another input with the name as &quot;password&quot;. If it finds it,
+            it will validate that the values match. You can define another input
+            to validate againts by passing the name as a string to the confirm
             option.
           </p>
           <p>The following form is coded as:</p>
