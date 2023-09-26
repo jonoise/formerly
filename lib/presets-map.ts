@@ -10,8 +10,11 @@ export const presetsMap = {
 }
 
 export const getPresets = (json: any) => {
-  const presets = [] as any
-  json.inputs.forEach((input: any) => {
+  const presets: Preset[] = []
+  if (!json?.inputs) return presets
+  if (!Array.isArray(json.inputs)) return presets
+
+  json?.inputs.forEach((input: any) => {
     if (input.type in presetsMap) {
       const preset = presetsMap[input.type as keyof typeof presetsMap]
       if (input?.options !== undefined) {

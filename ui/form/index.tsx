@@ -12,12 +12,14 @@ import {
   useFormContext,
 } from 'react-hook-form'
 import clsx from 'clsx'
-import { InputProps } from './input'
 import { EmailOptions } from '../presets/email'
 import { createSchema } from '@/lib/schemas'
 import { PasswordOptions } from '../presets/password'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getPresets } from '@/lib/presets-map'
+
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement | HTMLSelectElement> {}
 
 export type Preset = {
   component: React.ForwardRefExoticComponent<

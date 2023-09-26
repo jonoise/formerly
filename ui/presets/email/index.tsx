@@ -31,7 +31,7 @@ const defaultOptions: EmailOptions = {
     placeholder: 'Enter your email address',
   },
   rules: {
-    required: true,
+    required: 'Please enter your email address.',
     pattern: {
       value: /\S+@\S+\.\S+/,
       message: 'Please enter a valid email address.',
